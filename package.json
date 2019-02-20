@@ -4,8 +4,15 @@
   "description": "A social connector for developers",
   "main": "server.js",
   "scripts": {
+    "client": "npm start --prefix client",
+    "client-install": "cd client && yarn install",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server",
+    "server": "nodemon server",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dbon": "sudo systemctl start mongod",
+    "dboff": "sudo systemctl stop mongod",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
     "type": "git",
