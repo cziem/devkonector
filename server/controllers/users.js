@@ -126,5 +126,15 @@ module.exports = {
         error
       });
     }
+  },
+
+  // Return Current user
+  current: async (req, res) => {
+    res.json({
+      id: req.user.id,
+      name: req.user.name,
+      email: req.user.email,
+      avatar: req.user.avatar
+    });
   }
 };
