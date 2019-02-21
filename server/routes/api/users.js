@@ -10,4 +10,9 @@ const userController = require('../../controllers/users')
 // @access    Public
 router.get('/', userController.allUsers)
 
+// @Route     /api/users/register
+// @desc      Register a new user
+// @access    Public
+router.post('/register', userController.register)
+
 module.exports = router
