@@ -6,6 +6,7 @@ const secret = process.env.USER_SECRET;
 
 const User = require("../model/User");
 const validateRegisterInput = require("../validation/register");
+const validateLoginInput = require("../validation/login");
 
 module.exports = {
   // Get all Users
@@ -79,14 +80,21 @@ module.exports = {
 
   // Login a user and Send back Token
   login: async (req, res) => {
+    const { errors, isValid } = validateLoginInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
     const { email, password } = req.body;
 
     // Find the user
     let user = await User.findOne({ email });
 
     if (!user) {
+      errors.email = "No such user found! Invalid Email";
       return res.status(404).json({
-        message: "No such user found! Invalid Email",
+        errors,
         success: false
       });
     }
@@ -122,8 +130,9 @@ module.exports = {
           token: `Bearer ${token}`
         });
       } else {
+        errors.password = "Incorrect password";
         return res.status(400).json({
-          message: "Incorrect password",
+          errors,
           success: false
         });
       }
