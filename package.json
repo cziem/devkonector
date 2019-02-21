@@ -34,6 +34,7 @@
     "body-parser": "1.18.3",
     "concurrently": "4.1.0",
     "express": "4.16.4",
+    "gravatar": "1.8.0",
     "jsonwebtoken": "8.5.0",
     "moment": "2.24.0",
     "mongoose": "5.4.14",
