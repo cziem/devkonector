@@ -20,7 +20,8 @@ module.exports = {
     if (user) {
       // A user with the email already exists
       return res.status(400).json({
-        error: "Email already exists"
+        error: "Email already exists",
+        success: false
       });
     }
 
@@ -51,7 +52,8 @@ module.exports = {
       console.log(error);
       return res.status(500).json({
         message: "Could not save new user",
-        error
+        error,
+        success: false
       });
     }
   },
