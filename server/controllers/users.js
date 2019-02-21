@@ -5,9 +5,11 @@ const User = require("../model/User");
 
 module.exports = {
   // Get all Users
-  allUsers: (req, res) => {
+  allUsers: async (req, res) => {
+    const users = await User.find();
     res.json({
-      message: "All users..."
+      message: "All users...",
+      users
     });
   },
 
@@ -52,5 +54,37 @@ module.exports = {
         error
       });
     }
+  },
+
+  // Login a user and Send back Token
+  login: async (req, res) => {
+    const { email, password } = req.body;
+
+    // Find the user
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "No such user found! Invalid Email",
+        success: false
+      });
+    }
+
+    try {
+      let isMatch = await bcyrpt.compare(password, user.password);
+
+      if (isMatch) {
+        // Generate token
+        res.json({
+          message: "Login Successful",
+          success: true
+        });
+      } else {
+        return res.status(400).json({
+          message: "Incorrect password",
+          success: false
+        });
+      }
+    } catch (error) {}
   }
 };
