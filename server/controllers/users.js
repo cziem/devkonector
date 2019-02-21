@@ -1,5 +1,8 @@
 const gravatar = require("gravatar");
 const bcyrpt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+const secret = process.env.USER_SECRET;
 
 const User = require("../model/User");
 
@@ -84,10 +87,31 @@ module.exports = {
       let isMatch = await bcyrpt.compare(password, user.password);
 
       if (isMatch) {
-        // Generate token
+        // Matched user
+        const payload = {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar
+        };
+
+        // Generate signed token
+        const token = await jwt.sign(payload, secret, {
+          expiresIn: 7200
+        });
+
+        // Should Token fail for what ever reason
+        if (!token) {
+          return res.status(400).json({
+            message: "Cannot generate user Token...",
+            success: false
+          });
+        }
+
         res.json({
           message: "Login Successful",
-          success: true
+          success: true,
+          token: `Bearer ${token}`
         });
       } else {
         return res.status(400).json({
