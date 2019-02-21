@@ -6,11 +6,19 @@ const User = require("../model/User");
 module.exports = {
   // Get all Users
   allUsers: async (req, res) => {
-    const users = await User.find();
-    res.json({
-      message: "All users...",
-      users
-    });
+    try {
+      const users = await User.find();
+      res.json({
+        message: "All users...",
+        success: true,
+        users
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Cannot get all users",
+        success: false
+      });
+    }
   },
 
   // Register a new user
