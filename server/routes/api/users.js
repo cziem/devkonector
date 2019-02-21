@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
 
 const userController = require("../../controllers/users");
 
@@ -19,5 +20,14 @@ router.post("/register", userController.register);
 // @desc      Login a user / Returning a Token
 // @access    Public
 router.post("/login", userController.login);
+
+// @Route     /api/users/current
+// @desc      Return a current user
+// @access    Private
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  userController.current
+);
 
 module.exports = router;
