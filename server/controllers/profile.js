@@ -106,5 +106,84 @@ module.exports = {
         new Profile(profileFields).save().then(profile => res.json(profile));
       });
     }
+  },
+
+  getPublicHandle: async (req, res) => {
+    const errors = {};
+
+    try {
+      let profile = await Profile.findOne({
+        handle: req.params.handle
+      }).populate("user", ["name", "avatar"]);
+
+      if (!profile) {
+        errors.noProfile = `${req.user.name} currently has no profile`;
+        return res.status(404).json({
+          errors,
+          success: false
+        });
+      }
+
+      res.json(profile);
+    } catch (error) {
+      errors.noProfile = `${req.params.handle} has no profile`;
+      res.status(404).json({
+        errors,
+        success: false
+      });
+    }
+  },
+
+  getUserByID: async (req, res) => {
+    const errors = {};
+
+    try {
+      let profile = await Profile.findOne({
+        user: req.params.user_id
+      }).populate("user", ["name", "avatar"]);
+
+      if (!profile) {
+        errors.noProfile = `${req.user.name} currently has no profile`;
+        return res.status(404).json({
+          errors,
+          success: false
+        });
+      }
+
+      res.json(profile);
+    } catch (error) {
+      errors.noProfile = `Invalid Credentials. Check the userID...`;
+      res.status(404).json({
+        errors,
+        success: false
+      });
+    }
+  },
+
+  getAllProfiles: async (req, res) => {
+    const errors = {};
+
+    try {
+      let profiles = await Profile.find({}).populate("user", [
+        "name",
+        "avatar"
+      ]);
+
+      if (!profiles) {
+        errors.noProfiles = "There are no profiles";
+        return res.status(404).json({
+          errors,
+          success: false
+        });
+      }
+
+      res.json(profiles);
+    } catch (error) {
+      errors.noProfiles = "There are no profiles";
+      return res.status(400).json({
+        errors,
+        success: false
+      });
+    }
   }
 };

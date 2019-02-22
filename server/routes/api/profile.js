@@ -16,6 +16,24 @@ router.get(
   profileController.getProfile
 );
 
+// @type      GET
+// @Route     /api/profile/handle/:handle
+// @desc      Get profile by handle
+// @access    Public
+router.get("/handle/:handle", profileController.getPublicHandle);
+
+// @type      GET
+// @Route     /api/profile/user/:user_id
+// @desc      Get profile by user ID
+// @access    Public
+router.get("/user/:user_id", profileController.getUserByID);
+
+// @type      GET
+// @Route     /api/profile/all
+// @desc      GEt all profiles
+// @access    Public
+router.get("/all", profileController.getAllProfiles);
+
 // @type      POST
 // @Route     /api/profile
 // @desc      Create or Edit user profile
