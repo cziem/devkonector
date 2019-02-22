@@ -261,5 +261,42 @@ module.exports = {
         success: false
       });
     }
+  },
+
+  deleteExperience: async (req, res) => {
+    const errors = {};
+
+    try {
+      // Find Profile
+      let foundProfile = await Profile.findOne({ user: req.user.id });
+
+      if (foundProfile) {
+        const removeIndex = foundProfile.experience
+          .map(exp => exp.id)
+          .indexOf(req.params.exp_id);
+
+        // If experience was not found
+        if (removeIndex === -1) {
+          errors.noExperience = "Experince not found in our DB...";
+          return res.status(404).json({
+            errors,
+            success: false
+          });
+        }
+
+        // Splice out of the array
+        foundProfile.experience.splice(removeIndex, 1);
+
+        // Save and return to client
+        let profile = await foundProfile.save();
+        res.json(profile);
+      }
+    } catch (error) {
+      errors.noProfile = `${req.user.name} has no profile yet`;
+      return res.status(404).json({
+        errors,
+        success: false
+      });
+    }
   }
 };
