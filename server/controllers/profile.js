@@ -4,6 +4,7 @@ const User = require("../model/User");
 
 const validateProfileInput = require("../validation/profile");
 const validateExperienceInput = require("../validation/experience");
+const validateEducationInput = require("../validation/education");
 
 module.exports = {
   getProfile: async (req, res) => {
@@ -212,6 +213,43 @@ module.exports = {
         };
 
         foundProfile.experience.unshift(experience);
+
+        let profile = await foundProfile.save();
+        return res.json(profile);
+      }
+    } catch (error) {
+      errors.noProfile = `${req.user.name} has no profile yet`;
+      return res.status(404).json({
+        errors,
+        success: false
+      });
+    }
+  },
+
+  addEducation: async (req, res) => {
+    const { errors, isValid } = validateEducationInput(req.body);
+
+    // Check for validity
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    try {
+      // Find Profile
+      let foundProfile = await Profile.findOne({ user: req.user.id });
+
+      if (foundProfile) {
+        const education = {
+          school: req.body.school,
+          degree: req.body.degree,
+          field_of_study: req.body.field_of_study,
+          from: req.body.from,
+          to: req.body.to,
+          current: req.body.current,
+          description: req.body.description
+        };
+
+        foundProfile.education.unshift(education);
 
         let profile = await foundProfile.save();
         return res.json(profile);

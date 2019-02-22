@@ -46,12 +46,22 @@ router.post(
 
 // @type      POST
 // @Route     /api/profile/experience
-// @desc      Add experience
+// @desc      Add experience to profile
 // @access    Private
 router.post(
   "/experience",
   passport.authenticate("jwt", { session: false }),
   profileController.addExperience
+);
+
+// @type      POST
+// @Route     /api/profile/education
+// @desc      Add education to profile
+// @access    Private
+router.post(
+  "/education",
+  passport.authenticate("jwt", { session: false }),
+  profileController.addEducation
 );
 
 module.exports = router;
