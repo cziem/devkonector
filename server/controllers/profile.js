@@ -335,5 +335,25 @@ module.exports = {
         success: false
       });
     }
+  },
+
+  deleteProfile: async (req, res) => {
+    const errors = {};
+    // Find the profile
+    Profile.findOneAndRemove({ user: req.user.id })
+      .then(() => {
+        User.findOneAndRemove({ _id: req.user.id }).then(() =>
+          res.json({
+            success: true
+          })
+        );
+      })
+      .catch(err => {
+        errors.noProfile = "Profile does not exist";
+        res.status(404).json({
+          errors,
+          success: false
+        });
+      });
   }
 };
