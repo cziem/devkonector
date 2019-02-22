@@ -74,4 +74,14 @@ router.delete(
   profileController.deleteExperience
 );
 
+// @type      DELETE
+// @Route     /api/profile/education/:id
+// @desc      Remove education from profile
+// @access    Private
+router.delete(
+  "/education/:edu_id",
+  passport.authenticate("jwt", { session: false }),
+  profileController.deleteEducation
+);
+
 module.exports = router;
