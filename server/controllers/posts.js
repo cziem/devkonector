@@ -4,6 +4,37 @@ const Post = require("../model/Post");
 const validatePostInput = require("../validation/post");
 
 module.exports = {
+  // Get all posts
+  getPosts: async (req, res) => {
+    try {
+      let posts = await Post.find({})
+        .sort({ date: -1 })
+        .populate("users", ["name", "avatar"]);
+
+      return res.json(posts);
+    } catch (error) {
+      return res.json({
+        errors: "Did not find any post",
+        success: false
+      });
+    }
+  },
+
+  // Get a single post
+  getPost: async (req, res) => {
+    try {
+      let posts = await Post.findById(req.params.id);
+
+      return res.json(posts);
+    } catch (error) {
+      return res.json({
+        errors: "Did not find that post",
+        success: false
+      });
+    }
+  },
+
+  // Create a new post
   createPost: async (req, res) => {
     const { errors, isValid } = validatePostInput(req.body);
 
