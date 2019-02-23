@@ -23,9 +23,9 @@ module.exports = {
   // Get a single post
   getPost: async (req, res) => {
     try {
-      let posts = await Post.findById(req.params.id);
+      let post = await Post.findById(req.params.id);
 
-      return res.json(posts);
+      return res.json(post);
     } catch (error) {
       return res.json({
         errors: "Did not find that post",
@@ -58,6 +58,29 @@ module.exports = {
       errors.post = "Cannot create post";
       return res.status(400).json({
         errors,
+        success: false
+      });
+    }
+  },
+
+  // Delete a single post
+  deletePost: async (req, res) => {
+    try {
+      let post = await Post.findByIdAndDelete(req.params.id);
+
+      if (!post) {
+        return res.json({
+          success: false,
+          errors: "No such post found"
+        });
+      } else {
+        return res.json({
+          success: true
+        });
+      }
+    } catch (error) {
+      return res.json({
+        errors: "Did not find that post",
         success: false
       });
     }
