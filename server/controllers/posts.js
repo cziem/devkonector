@@ -65,21 +65,31 @@ module.exports = {
 
   // Delete a single post
   deletePost: async (req, res) => {
+    const errors = {};
     try {
-      let post = await Post.findByIdAndDelete(req.params.id);
+      let post = await Post.findById(req.params.id);
 
       if (!post) {
-        return res.json({
+        errors.noPost = "No such post found";
+        return res.status(404).json({
           success: false,
-          errors: "No such post found"
+          errors
         });
       } else {
-        return res.json({
-          success: true
-        });
+        if (post.user.toString() !== req.user.id) {
+          errors.notAuthorized = "User not authorized for this operation";
+
+          return res.status(401).json({
+            errors,
+            success: false
+          });
+        } else {
+          const removedPost = await post.remove();
+          return res.json({ success: true });
+        }
       }
     } catch (error) {
-      return res.json({
+      return res.status(404).json({
         errors: "Did not find that post",
         success: false
       });
