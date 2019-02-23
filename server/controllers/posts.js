@@ -214,5 +214,62 @@ module.exports = {
         success: false
       });
     }
+  },
+
+  // Unlike a post
+  addComment: async (req, res) => {
+    const { errors, isValid } = validatePostInput(req.body);
+
+    // Check for validity
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+
+      if (!profile) {
+        errors.noProfile =
+          "User has no profile, Probably not a registered user!";
+
+        return res.status(400).json({
+          errors,
+          success: false,
+          message: "Please create a profile"
+        });
+      } else {
+        let post = await Post.findById(req.params.id);
+
+        // Check if post exists
+        if (!post) {
+          errors.noPost = "No such post found";
+          return res.status(404).json({
+            success: false,
+            errors
+          });
+        }
+
+        // Create new comment
+        const newComment = {
+          text: req.body.text,
+          name: req.body.name,
+          avatar: req.body.avatar,
+          user: req.user.id
+        };
+
+        // Add comment to comments array
+        post.comments.unshift(newComment);
+
+        let postComment = await post.save();
+        res.json(postComment);
+      }
+    } catch (error) {
+      errors.noProfile = "User has no profile, Probably not a registered user!";
+      return res.status(401).json({
+        errors,
+        message: "Please sign up",
+        success: false
+      });
+    }
   }
 };
