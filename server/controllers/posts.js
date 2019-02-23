@@ -152,5 +152,67 @@ module.exports = {
         success: false
       });
     }
+  },
+
+  // Unlike a post
+  unlike: async (req, res) => {
+    const errors = {};
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+
+      if (!profile) {
+        errors.noProfile =
+          "User has no profile, Probably not a registered user!";
+
+        return res.status(400).json({
+          errors,
+          success: false,
+          message: "Please create a profile"
+        });
+      } else {
+        let post = await Post.findById(req.params.id);
+
+        // Check if post exists
+        if (!post) {
+          errors.noPost = "No such post found";
+          return res.status(404).json({
+            success: false,
+            errors
+          });
+        }
+
+        // Check if user has like the post already
+        const isLiked = post.likes.filter(
+          like => like.user.toString() === req.user.id
+        );
+
+        if (isLiked.length === 0) {
+          errors.isLiked = "User has not liked this post yet";
+          return res.status(400).json({
+            errors,
+            success: false
+          });
+        }
+
+        // Find the removeIndex
+        const removeIndex = post.likes
+          .map(item => item.user.toString())
+          .indexOf(req.user.id);
+
+        // Splice out the user from the likes array
+        post.likes.splice(removeIndex, 1);
+
+        let unlikedPosts = await post.save();
+        res.json(unlikedPosts);
+      }
+    } catch (error) {
+      errors.noProfile = "User has no profile, Probably not a registered user!";
+      return res.status(401).json({
+        errors,
+        message: "Please sign up",
+        success: false
+      });
+    }
   }
 };

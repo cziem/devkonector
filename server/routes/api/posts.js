@@ -30,12 +30,22 @@ router.post(
 
 // @type      POST
 // @Route     /api/posts/like/:id
-// @desc      like a post
+// @desc      Like a post
 // @access    Private
 router.post(
   "/like/:id",
   passport.authenticate("jwt", { session: false }),
   postController.like
+);
+
+// @type      POST
+// @Route     /api/posts/unllike/:id
+// @desc      Unlike a post
+// @access    Private
+router.post(
+  "/unlike/:id",
+  passport.authenticate("jwt", { session: false }),
+  postController.unlike
 );
 
 // @type      DELETE
