@@ -28,6 +28,16 @@ router.post(
   postController.createPost
 );
 
+// @type      POST
+// @Route     /api/posts/like/:id
+// @desc      like a post
+// @access    Private
+router.post(
+  "/like/:id",
+  passport.authenticate("jwt", { session: false }),
+  postController.like
+);
+
 // @type      DELETE
 // @Route     /api/posts/:id
 // @desc      Delete a post

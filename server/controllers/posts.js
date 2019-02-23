@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Post = require("../model/Post");
+const Profile = require("../model/Profile");
 
 const validatePostInput = require("../validation/post");
 
@@ -91,6 +92,63 @@ module.exports = {
     } catch (error) {
       return res.status(404).json({
         errors: "Did not find that post",
+        success: false
+      });
+    }
+  },
+
+  // Like a post
+  like: async (req, res) => {
+    const errors = {};
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+
+      if (!profile) {
+        errors.noProfile =
+          "User has no profile, Probably not a registered user!";
+
+        return res.status(400).json({
+          errors,
+          success: false,
+          message: "Please create a profile"
+        });
+      } else {
+        let post = await Post.findById(req.params.id);
+
+        // Check if post exists
+        if (!post) {
+          errors.noPost = "No such post found";
+          return res.status(404).json({
+            success: false,
+            errors
+          });
+        }
+
+        // Check if user has like the post already
+        const isLiked = post.likes.filter(
+          like => like.user.toString() === req.user.id
+        );
+
+        if (isLiked.length > 0) {
+          errors.isLiked = "User already liked this post";
+          return res.status(400).json({
+            errors,
+            success: false
+          });
+        }
+
+        // Add the user to the likes array
+        post.likes.unshift({ user: req.user.id });
+
+        let likedPost = await post.save();
+        res.json(likedPost);
+      }
+    } catch (error) {
+      errors.noProfile = "User has no profile, Probably not a registered user!";
+      return res.status(401).json({
+        errors,
+        message: "Please sign up",
         success: false
       });
     }
