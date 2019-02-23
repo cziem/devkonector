@@ -216,7 +216,7 @@ module.exports = {
     }
   },
 
-  // Unlike a post
+  // Add a comment post
   addComment: async (req, res) => {
     const { errors, isValid } = validatePostInput(req.body);
 
@@ -264,6 +264,70 @@ module.exports = {
         res.json(postComment);
       }
     } catch (error) {
+      errors.noProfile = "User has no profile, Probably not a registered user!";
+      return res.status(401).json({
+        errors,
+        message: "Please sign up",
+        success: false
+      });
+    }
+  },
+
+  // Remove a comment post
+  removeComment: async (req, res) => {
+    const errors = {};
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+
+      if (!profile) {
+        errors.noProfile =
+          "User has no profile, Probably not a registered user!";
+
+        return res.status(400).json({
+          errors,
+          success: false,
+          message: "Please create a profile"
+        });
+      } else {
+        let post = await Post.findById(req.params.id);
+
+        // Check if post exists
+        if (!post) {
+          errors.noPost = "No such post found";
+          return res.status(404).json({
+            success: false,
+            errors
+          });
+        }
+
+        // Find the comment to remove
+        const foundComment = post.comments.filter(
+          comment => comment._id.toString() === req.params.comment_id
+        );
+
+        if (foundComment.length === 0) {
+          // Comment does not exist
+          errors.noComment = "Comment does not exist";
+          return res.status(404).json({
+            errors,
+            success: false
+          });
+        }
+
+        // Get the removeIndex for the comment to be removed
+        const removeIndex = post.comments
+          .map(item => item._id.toString())
+          .indexOf(req.params.comment_id);
+
+        // Splice comment out of the array
+        post.comments.splice(removeIndex, 1);
+
+        let postComment = await post.save();
+        res.json(postComment);
+      }
+    } catch (error) {
+      console.log(error);
       errors.noProfile = "User has no profile, Probably not a registered user!";
       return res.status(401).json({
         errors,

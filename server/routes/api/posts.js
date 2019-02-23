@@ -50,12 +50,22 @@ router.post(
 
 // @type      POST
 // @Route     /api/posts/comment/:id
-// @desc      Unlike a post
+// @desc      Add comment to a post
 // @access    Private
 router.post(
   "/comment/:id",
   passport.authenticate("jwt", { session: false }),
   postController.addComment
+);
+
+// @type      DELETE
+// @Route     /api/posts/comment/:id
+// @desc      Remove comment from a post
+// @access    Private
+router.delete(
+  "/comment/:id/:comment_id",
+  passport.authenticate("jwt", { session: false }),
+  postController.removeComment
 );
 
 // @type      DELETE
