@@ -28,12 +28,12 @@ class Navbar extends Component {
 
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <a className="nav-item" href="register.html">
+                <a className="nav-link" href="register.html">
                   Sign Up
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-item" href="login.html">
+                <a className="nav-link" href="login.html">
                   Login
                 </a>
               </li>
