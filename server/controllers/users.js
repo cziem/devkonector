@@ -12,7 +12,7 @@ module.exports = {
   // Get all Users
   allUsers: async (req, res) => {
     try {
-      const users = await User.find();
+      const users = await User.find().select("-password -__v");
       res.json({
         message: "All users...",
         success: true,
