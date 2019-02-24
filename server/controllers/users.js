@@ -67,7 +67,13 @@ module.exports = {
 
       const user = await newUser.save();
 
-      return res.json(user);
+      return res.json({
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        date: user.date
+      });
     } catch (error) {
       console.log(error);
       return res.status(500).json({
