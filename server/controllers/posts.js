@@ -15,8 +15,7 @@ module.exports = {
       return res.json(posts);
     } catch (error) {
       return res.json({
-        errors: "Did not find any post",
-        success: false
+        errors: "Did not find any post"
       });
     }
   },
@@ -29,8 +28,7 @@ module.exports = {
       return res.json(post);
     } catch (error) {
       return res.json({
-        errors: "Did not find that post",
-        success: false
+        errors: "Did not find that post"
       });
     }
   },
@@ -57,10 +55,7 @@ module.exports = {
       return res.json(post);
     } catch (error) {
       errors.post = "Cannot create post";
-      return res.status(400).json({
-        errors,
-        success: false
-      });
+      return res.status(400).json(errors);
     }
   },
 
@@ -72,28 +67,20 @@ module.exports = {
 
       if (!post) {
         errors.noPost = "No such post found";
-        return res.status(404).json({
-          success: false,
-          errors
-        });
+        return res.status(404).json(errors);
       } else {
         if (post.user.toString() !== req.user.id) {
           errors.notAuthorized = "User not authorized for this operation";
 
-          return res.status(401).json({
-            errors,
-            success: false
-          });
+          return res.status(401).json(errors);
         } else {
           const removedPost = await post.remove();
           return res.json({ success: true });
         }
       }
     } catch (error) {
-      return res.status(404).json({
-        errors: "Did not find that post",
-        success: false
-      });
+      errors.noPost = "Did not find that post";
+      return res.status(404).json(errors);
     }
   },
 
@@ -108,21 +95,14 @@ module.exports = {
         errors.noProfile =
           "User has no profile, Probably not a registered user!";
 
-        return res.status(400).json({
-          errors,
-          success: false,
-          message: "Please create a profile"
-        });
+        return res.status(400).json(errors);
       } else {
         let post = await Post.findById(req.params.id);
 
         // Check if post exists
         if (!post) {
           errors.noPost = "No such post found";
-          return res.status(404).json({
-            success: false,
-            errors
-          });
+          return res.status(404).json(errors);
         }
 
         // Check if user has like the post already
@@ -132,10 +112,7 @@ module.exports = {
 
         if (isLiked.length > 0) {
           errors.isLiked = "User already liked this post";
-          return res.status(400).json({
-            errors,
-            success: false
-          });
+          return res.status(400).json(errors);
         }
 
         // Add the user to the likes array
@@ -146,11 +123,7 @@ module.exports = {
       }
     } catch (error) {
       errors.noProfile = "User has no profile, Probably not a registered user!";
-      return res.status(401).json({
-        errors,
-        message: "Please sign up",
-        success: false
-      });
+      return res.status(401).json(errors);
     }
   },
 
@@ -165,21 +138,14 @@ module.exports = {
         errors.noProfile =
           "User has no profile, Probably not a registered user!";
 
-        return res.status(400).json({
-          errors,
-          success: false,
-          message: "Please create a profile"
-        });
+        return res.status(400).json(errors);
       } else {
         let post = await Post.findById(req.params.id);
 
         // Check if post exists
         if (!post) {
           errors.noPost = "No such post found";
-          return res.status(404).json({
-            success: false,
-            errors
-          });
+          return res.status(404).json(errors);
         }
 
         // Check if user has like the post already
@@ -189,10 +155,7 @@ module.exports = {
 
         if (isLiked.length === 0) {
           errors.isLiked = "User has not liked this post yet";
-          return res.status(400).json({
-            errors,
-            success: false
-          });
+          return res.status(400).json(errors);
         }
 
         // Find the removeIndex
@@ -208,11 +171,7 @@ module.exports = {
       }
     } catch (error) {
       errors.noProfile = "User has no profile, Probably not a registered user!";
-      return res.status(401).json({
-        errors,
-        message: "Please sign up",
-        success: false
-      });
+      return res.status(401).json(errors);
     }
   },
 
@@ -232,21 +191,14 @@ module.exports = {
         errors.noProfile =
           "User has no profile, Probably not a registered user!";
 
-        return res.status(400).json({
-          errors,
-          success: false,
-          message: "Please create a profile"
-        });
+        return res.status(400).json(errors);
       } else {
         let post = await Post.findById(req.params.id);
 
         // Check if post exists
         if (!post) {
           errors.noPost = "No such post found";
-          return res.status(404).json({
-            success: false,
-            errors
-          });
+          return res.status(404).json(errors);
         }
 
         // Create new comment
@@ -265,11 +217,7 @@ module.exports = {
       }
     } catch (error) {
       errors.noProfile = "User has no profile, Probably not a registered user!";
-      return res.status(401).json({
-        errors,
-        message: "Please sign up",
-        success: false
-      });
+      return res.status(401).json(errors);
     }
   },
 
@@ -284,21 +232,14 @@ module.exports = {
         errors.noProfile =
           "User has no profile, Probably not a registered user!";
 
-        return res.status(400).json({
-          errors,
-          success: false,
-          message: "Please create a profile"
-        });
+        return res.status(400).json(errors);
       } else {
         let post = await Post.findById(req.params.id);
 
         // Check if post exists
         if (!post) {
           errors.noPost = "No such post found";
-          return res.status(404).json({
-            success: false,
-            errors
-          });
+          return res.status(404).json(errors);
         }
 
         // Find the comment to remove
@@ -309,10 +250,7 @@ module.exports = {
         if (foundComment.length === 0) {
           // Comment does not exist
           errors.noComment = "Comment does not exist";
-          return res.status(404).json({
-            errors,
-            success: false
-          });
+          return res.status(404).json(errors);
         }
 
         // Get the removeIndex for the comment to be removed
@@ -329,11 +267,7 @@ module.exports = {
     } catch (error) {
       console.log(error);
       errors.noProfile = "User has no profile, Probably not a registered user!";
-      return res.status(401).json({
-        errors,
-        message: "Please sign up",
-        success: false
-      });
+      return res.status(401).json(errors);
     }
   }
 };

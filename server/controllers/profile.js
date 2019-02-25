@@ -18,18 +18,12 @@ module.exports = {
 
       if (!profile) {
         errors.noProfile = `${req.user.name} currently has no profile`;
-        return res.status(404).json({
-          errors,
-          success: false
-        });
+        return res.status(404).json(errors);
       }
 
       res.json(profile);
     } catch (error) {
-      res.status(404).json({
-        error,
-        success: false
-      });
+      res.status(404).json(error);
     }
   },
 
@@ -86,10 +80,7 @@ module.exports = {
         );
         return res.json(updateProfile);
       } catch (error) {
-        res.status(400).json({
-          error,
-          success: false
-        });
+        res.status(400).json(error);
       }
     } else {
       // User has no profile, Let's create one
@@ -98,10 +89,7 @@ module.exports = {
       Profile.findOne({ handle: profileFields.handle }).then(profile => {
         if (profile) {
           errors.handle = "That handle already exists";
-          return res.status(400).json({
-            errors,
-            success: false
-          });
+          return res.status(400).json(errors);
         }
 
         // Save new profile handle
@@ -120,19 +108,13 @@ module.exports = {
 
       if (!profile) {
         errors.noProfile = `${req.user.name} currently has no profile`;
-        return res.status(404).json({
-          errors,
-          success: false
-        });
+        return res.status(404).json(errors);
       }
 
       res.json(profile);
     } catch (error) {
       errors.noProfile = `${req.params.handle} has no profile`;
-      res.status(404).json({
-        errors,
-        success: false
-      });
+      res.status(404).json(errors);
     }
   },
 
@@ -146,19 +128,13 @@ module.exports = {
 
       if (!profile) {
         errors.noProfile = `${req.user.name} currently has no profile`;
-        return res.status(404).json({
-          errors,
-          success: false
-        });
+        return res.status(404).json(errors);
       }
 
       res.json(profile);
     } catch (error) {
       errors.noProfile = `Invalid Credentials. Check the userID...`;
-      res.status(404).json({
-        errors,
-        success: false
-      });
+      res.status(404).json(errors);
     }
   },
 
@@ -173,19 +149,13 @@ module.exports = {
 
       if (!profiles) {
         errors.noProfiles = "There are no profiles";
-        return res.status(404).json({
-          errors,
-          success: false
-        });
+        return res.status(404).json(errors);
       }
 
       res.json(profiles);
     } catch (error) {
       errors.noProfiles = "There are no profiles";
-      return res.status(400).json({
-        errors,
-        success: false
-      });
+      return res.status(400).json(errors);
     }
   },
 
@@ -219,10 +189,7 @@ module.exports = {
       }
     } catch (error) {
       errors.noProfile = `${req.user.name} has no profile yet`;
-      return res.status(404).json({
-        errors,
-        success: false
-      });
+      return res.status(404).json(errors);
     }
   },
 
@@ -256,10 +223,7 @@ module.exports = {
       }
     } catch (error) {
       errors.noProfile = `${req.user.name} has no profile yet`;
-      return res.status(404).json({
-        errors,
-        success: false
-      });
+      return res.status(404).json(errors);
     }
   },
 
@@ -278,10 +242,7 @@ module.exports = {
         // If experience was not found
         if (removeIndex === -1) {
           errors.noExperience = "Experince not found in our DB...";
-          return res.status(404).json({
-            errors,
-            success: false
-          });
+          return res.status(404).json(errors);
         }
 
         // Splice out of the array
@@ -293,10 +254,7 @@ module.exports = {
       }
     } catch (error) {
       errors.noProfile = `${req.user.name} has no profile yet`;
-      return res.status(404).json({
-        errors,
-        success: false
-      });
+      return res.status(404).json(errors);
     }
   },
 
@@ -315,10 +273,7 @@ module.exports = {
         // If experience was not found
         if (removeIndex === -1) {
           errors.noEducation = "Education not found in our DB...";
-          return res.status(404).json({
-            errors,
-            success: false
-          });
+          return res.status(404).json(errors);
         }
 
         // Splice out of the array
@@ -330,10 +285,7 @@ module.exports = {
       }
     } catch (error) {
       errors.noProfile = `${req.user.name} has no profile yet`;
-      return res.status(404).json({
-        errors,
-        success: false
-      });
+      return res.status(404).json(errors);
     }
   },
 
@@ -350,10 +302,7 @@ module.exports = {
       })
       .catch(err => {
         errors.noProfile = "Profile does not exist";
-        res.status(404).json({
-          errors,
-          success: false
-        });
+        res.status(404).json(errors);
       });
   }
 };

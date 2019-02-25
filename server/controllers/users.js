@@ -39,10 +39,7 @@ module.exports = {
     if (user) {
       // A user with the email already exists
       errors.email = "Email already exists";
-      return res.status(400).json({
-        errors,
-        success: false
-      });
+      return res.status(400).json(errors);
     }
 
     // Register a New User
@@ -99,10 +96,7 @@ module.exports = {
 
     if (!user) {
       errors.email = "No such user found! Invalid Email";
-      return res.status(404).json({
-        errors,
-        success: false
-      });
+      return res.status(404).json(errors);
     }
 
     try {
@@ -124,10 +118,8 @@ module.exports = {
 
         // Should Token fail for what ever reason
         if (!token) {
-          return res.status(400).json({
-            message: "Cannot generate user Token...",
-            success: false
-          });
+          errors.token = "Cannot generate user Token...";
+          return res.status(400).json(errors);
         }
 
         res.json({
@@ -137,10 +129,7 @@ module.exports = {
         });
       } else {
         errors.password = "Incorrect password";
-        return res.status(400).json({
-          errors,
-          success: false
-        });
+        return res.status(400).json(errors);
       }
     } catch (error) {
       return res.status(500).json({
