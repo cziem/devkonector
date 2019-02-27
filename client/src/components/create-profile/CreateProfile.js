@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { TextFieldGroup } from "../helpers/TextFieldGroup";
 import { TextAreaFieldGroup } from "../helpers/TextAreaFieldGroup";
-import { SelectGroup } from "../helpers/SelectGroup";
+import { SelectListGroup } from "../helpers/SelectListGroup";
 import { InputGroup } from "../helpers/InputGroup";
 
 class CreateProfile extends Component {
