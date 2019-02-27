@@ -14,6 +14,7 @@ import Navbar from "./layouts/Navbar";
 import Footer from "./layouts/Footer";
 import Landing from "./layouts/Landing";
 import Dashboard from "./dashboard/Dashboard";
+import CreateProfile from "./create-profile/CreateProfile";
 import PrivateRoute from "./helpers/PrivateRoute";
 
 // Actions
@@ -58,6 +59,11 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                <PrivateRoute
+                  exact
+                  path="/create-profile"
+                  component={CreateProfile}
+                />
               </Switch>
             </div>
             <Footer />
