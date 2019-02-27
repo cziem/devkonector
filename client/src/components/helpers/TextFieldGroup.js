@@ -31,7 +31,7 @@ const TextFieldGroup = ({
   );
 };
 
-TextFieldGroup.PropTypes = {
+TextFieldGroup.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
