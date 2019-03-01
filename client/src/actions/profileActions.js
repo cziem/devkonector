@@ -42,7 +42,7 @@ export const createProfile = (profileData, history) => dispatch => {
 // Add Experience
 export const addExperience = (experience, history) => dispatch => {
   axios
-    .post("/api/profile/experience")
+    .post("/api/profile/experience", experience)
     .then(res => history.push("/dashboard"))
     .catch(err =>
       dispatch({
