@@ -8,6 +8,7 @@ import setAuthToken from "../utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "../actions/authActions";
 
 import "../styles/App.css";
+// import "../../../server/config/config";
 
 // Components
 import Navbar from "./layouts/Navbar";
