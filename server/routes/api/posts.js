@@ -59,7 +59,7 @@ router.post(
 );
 
 // @type      DELETE
-// @Route     /api/posts/comment/:id
+// @Route     /api/posts/comment/:postId/:commentId
 // @desc      Remove comment from a post
 // @access    Private
 router.delete(

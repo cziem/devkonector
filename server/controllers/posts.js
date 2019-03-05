@@ -224,6 +224,7 @@ module.exports = {
   // Remove a comment post
   removeComment: async (req, res) => {
     const errors = {};
+    console.log(req.params);
 
     try {
       const profile = await Profile.findOne({ user: req.user.id });
