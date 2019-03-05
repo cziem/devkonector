@@ -30,10 +30,16 @@ class Profiles extends Component {
 
     return (
       <div className="profiles">
-        <div className="container row col-md-12">
-          <h4 className="display-4 text-center">Developer Profiles</h4>
-          <p className="lead text-center">Browse and connect with developers</p>
-          {profileItems}
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12">
+              <h4 className="display-4 text-center">Developer Profiles</h4>
+              <p className="lead text-center">
+                Browse and connect with developers
+              </p>
+              {profileItems}
+            </div>
+          </div>
         </div>
       </div>
     );
