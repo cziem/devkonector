@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   ADD_POST,
   GET_ERRORS,
+  CLEAR_ERRORS,
   POST_LOADING,
   GET_POST,
   GET_POSTS,
@@ -91,6 +92,7 @@ export const getPost = id => dispatch => {
 
 // add a comment
 export const addComment = (postId, commentData) => dispatch => {
+  dispatch(clearErrors());
   axios
     .post(`/api/posts/comment/${postId}`, commentData)
     .then(res =>
@@ -145,3 +147,6 @@ export const deleteComment = (postId, commentId) => dispatch => {
 
 // Set Loading state
 export const setPostLoading = () => ({ type: POST_LOADING });
+
+// Clear Errors
+export const clearErrors = () => ({ type: CLEAR_ERRORS });
